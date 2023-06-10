@@ -2,9 +2,22 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title></title>
   </head>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var dt = new Date($.now());
+      var hr = dt.getHours();
+      var greetings = hr <= 11 ? "Good morning," : hr < 18 ? "Good afternoon," : "Good evening,";
+      $("#h3greetings").text(greetings);
+    });
+  </script>
   <body>
-    test 123
+    <h3 id="h3greetings"> Test </h3> <name>
+      What's on your mind?
+
+
   </body>
 </html>
