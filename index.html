@@ -8,16 +8,52 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-      var dt = new Date($.now());
-      var hr = dt.getHours();
-      var greetings = hr <= 11 ? "Good morning," : hr < 18 ? "Good afternoon," : "Good evening,";
-      $("#h3greetings").text(greetings);
+      $(".main").hide();
+      $("#OKbutton").click(function(){
+        var name = $("#userName").val();
+        var dt = new Date($.now());
+        var hr = dt.getHours();
+        var greetings = hr <= 11 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
+        $("#h3greetings").text(greetings + ", " + name + "!");
+        $(".getName").hide();
+        $(".main").show();
+      });
     });
   </script>
   <body>
-    <h3 id="h3greetings"> Test </h3> <name>
-      What's on your mind?
+    <div class="getName" >
+      Enter name: <input type="text" id="userName" required>
+      <button type="button" id="OKbutton"> OK </button>
+    </div>
+    <div class="main">
+      <h3 id="h3greetings"> </h3>
+      <textarea id="diaryNote" rows="2" cols="20" placeholder="What's on your mind?"></textarea>
+      <div class="content" style="width: 30%;">
+        <div style="background-color:red; width: 50%; float:left">
+          <h3> Saved</h3>
 
-
+        </div>
+        <div style="background-color:blue; width: 50%; float:left">
+          <h3> Community</h3>
+        </div>
+        <!-- <table>
+          <tr> <th>Saved</th> <th>Community</th> </tr>
+          <tr><td>Test data 1</td> <td>Test data 2</td> </tr>
+          <tr><td>Test data 1</td> </tr>
+          <tr><td>Test data 1</td> </tr>
+        </table> -->
+      </div>
+    </div>
   </body>
+
+  <style media="screen">
+    #diaryNote{
+      border: 6px solid #ccc;
+      border-radius: 200px;
+      background-color: #f8f8f8;
+      font-size: 16px;
+      resize: none;
+      text-align: center;
+    }
+  </style>
 </html>
