@@ -10,6 +10,7 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
+      setInterval(updateDuration(), 1000);
       $(".main").hide();
       var name, profilePic, diaryNote, timePosted, durationFinal="", durationID=0;
       var minute=0;
@@ -37,41 +38,40 @@
         timePosted = new Date();
         diaryNote = $("#diaryNote").val();
         if(diaryNote != ""){
-          $(categoryA).append(profilePic + name + categoryB + " a note. <span class='textDuration"+durationID+"'> </span> <br> <p class='textContent'>"+ diaryNote + " </p> <hr>");
+          $(categoryA).append(profilePic + name + categoryB + " a note. <span id='"+durationID+"' time-posted="+timePosted+" class='textDuration'> </span> <br> <p class='textContent'>"+ diaryNote + " </p> <hr>");
           $("#diaryNote").val("");
-          setInterval(updateDuration(durationID), 1000);
         }
       }
-      function updateDuration(durationID1){
-        var currentTime = new Date()
-        var duration = currentTime - timePosted
-        var durationResult = duration/1000
-        if(Math.trunc(durationResult)%60 == 0){
-          minute = minute+1;
-          if (minute%60 == 0){
-            hour = hour+1;
-            console.log(durationFinal)
-            if (hour%24 == 0){
-              day = day+1;
+      function updateDuration(){
+        console.log("test");
+        $(".textDuration").each(function(){
+          timePosted = $(this).attr('time-posted')
+          var currentTime = new Date()
+          var duration = currentTime - timePosted
+          var durationResult = duration/1000
+          if(Math.trunc(durationResult)%60 == 0){
+            minute = minute+1;
+            if (minute%60 == 0){
+              hour = hour+1;
               console.log(durationFinal)
-              if(day%7 == 0){
-                week = week+1;
-                durationFinal = week + "W";
+              if (hour%24 == 0){
+                day = day+1;
                 console.log(durationFinal)
+                if(day%7 == 0){
+                  week = week+1;
+                  durationFinal = week + "W";
+                  console.log(durationFinal)
+                }
+                durationFinal = week == 0 ? day + "D" : durationFinal;
               }
-              durationFinal = week == 0 ? day + "D" : durationFinal;
+              durationFinal = day == 0 ? hour + "HR" : durationFinal;
             }
-            durationFinal = day == 0 ? hour + "HR" : durationFinal;
+            durationFinal = hour == 0 ? minute + "MIN" : durationFinal;
           }
-          durationFinal = hour == 0 ? minute + "MIN" : durationFinal;
-        }
-        /*if(Math.trunc(durationResult)%15 == 0){
-          clearInterval(12);
-          setInterval(updateDuration(durationID1), 1000);
-        } */
-        console.log(durationFinal+"1")
-        durationText = durationFinal == "" ? "now" : durationFinal
-        $(".durationText"+durationID1).text(durationText);
+          console.log(durationFinal+"1")
+          durationText = durationFinal == "" ? "now" : durationFinal
+          $(this).text(durationText+"test")
+        })
       }
     });
   </script>
