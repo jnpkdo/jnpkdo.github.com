@@ -11,27 +11,68 @@
   <script type="text/javascript">
     $(document).ready(function(){
       $(".main").hide();
+      var name, profilePic, diaryNote, timePosted, durationFinal="", durationID=0;
+      var minute=0;
+      var hour = 0;
+      var day = 0;
+      var week = 0;
       $("#OKbutton").click(function(){
-        var name = $("#userName").val();
+        name = $("#userName").val();
         var dt = new Date($.now());
         var hr = dt.getHours();
         var greetings = hr <= 11 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
         $("#h3greetings").text(greetings + ", " + name + "!");
         $(".getName").hide();
         $(".main").show();
+        profilePic = "<div class='circle'> " + name.charAt(0) + " </div>";
       });
       $("#savebutton").click(function(){
-        if($("#diaryNote").val() != ""){
-          $("#contentSaved").append($("#diaryNote").val()+"<br>");
-          $("#diaryNote").val("");
-        }
+        saveshareButton("#contentSaved", "saved");
       });
       $("#sharebutton").click(function(){
-        if($("#diaryNote").val() != ""){
-          $("#contentCommunity").append($("#diaryNote").val()+"<br> <hr>");
-          $("#diaryNote").val("");
-        }
+        saveshareButton("#contentCommunity", "shared");
       });
+      function saveshareButton(categoryA, categoryB){
+        durationID = durationID+1;
+        timePosted = new Date();
+        diaryNote = $("#diaryNote").val();
+        if(diaryNote != ""){
+          $(categoryA).append(profilePic + name + categoryB + " a note. <span class='textDuration"+durationID+"'> </span> <br> <p class='textContent'>"+ diaryNote + " </p> <hr>");
+          $("#diaryNote").val("");
+          setInterval(updateDuration(durationID), 1000);
+        }
+      }
+      function updateDuration(durationID1){
+        var currentTime = new Date()
+        var duration = currentTime - timePosted
+        var durationResult = duration/1000
+        if(Math.trunc(durationResult)%60 == 0){
+          minute = minute+1;
+          if (minute%60 == 0){
+            hour = hour+1;
+            console.log(durationFinal)
+            if (hour%24 == 0){
+              day = day+1;
+              console.log(durationFinal)
+              if(day%7 == 0){
+                week = week+1;
+                durationFinal = week + "W";
+                console.log(durationFinal)
+              }
+              durationFinal = week == 0 ? day + "D" : durationFinal;
+            }
+            durationFinal = day == 0 ? hour + "HR" : durationFinal;
+          }
+          durationFinal = hour == 0 ? minute + "MIN" : durationFinal;
+        }
+        /*if(Math.trunc(durationResult)%15 == 0){
+          clearInterval(12);
+          setInterval(updateDuration(durationID1), 1000);
+        } */
+        console.log(durationFinal+"1")
+        durationText = durationFinal == "" ? "now" : durationFinal
+        $(".durationText"+durationID1).text(durationText);
+      }
     });
   </script>
   <body>
@@ -73,6 +114,23 @@
       font-size: 16px;
       resize: none;
       text-align: center;
+    }
+    .circle
+    {
+      width:30px;
+      height:30px;
+      border-radius:250px;
+      font-size:10px;
+      color:#000;
+      line-height:30px;
+      text-align:center;
+      background-image: linear-gradient(red, yellow);
+      text-transform: capitalize;
+      display: inline-block;
+    }
+    .textContent{
+      text-indent: 10%;
+      margin: -1;
     }
   </style>
 </html>
